@@ -50,6 +50,8 @@ namespace Peak_Performance.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
                 db.Coaches.Add(coach);
                 db.SaveChanges();
                 return RedirectToAction("Index");

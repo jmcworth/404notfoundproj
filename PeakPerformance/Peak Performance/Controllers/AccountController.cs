@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -79,6 +80,23 @@ namespace Peak_Performance.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    var user = await UserManager.FindByEmailAsync(model.Email);
+                    var roles = await UserManager.GetRolesAsync(user.Id);
+                    var confirmedEmail = await UserManager.IsEmailConfirmedAsync(user.Id);
+
+                    if(user != null) {
+                        if(!confirmedEmail && roles.Contains("Coach")) {
+                            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                            ViewBag.error = "Please confirm your email and register your account before logging in";
+                            return View();
+                        }
+                        else if(!confirmedEmail && roles.Contains("Athlete")) {
+                            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                            ViewBag.error = "You need authorization from your coach to login. If you haven't received an email yet ask your coach to send one.";
+                            return View();
+                        }
+                    }
+
                     return RedirectToLocal(returnUrl);
 
                 case SignInStatus.LockedOut:
@@ -184,6 +202,10 @@ namespace Peak_Performance.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    //var coach = PeakPerformance.Coach.Create();
+                    
+                    
                     if (User.IsInRole("Admin"))
                     {
                         //return to admin homepage
@@ -209,8 +231,26 @@ namespace Peak_Performance.Controllers
             return View(model);
         }
 
+        private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject, string name) {
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            string bodyOfEmail = "Hello " + name + ", please follow <a href=\"" + callbackUrl + "\">this link</a> to confirm your <i>Peak Performance</i> account";
+            await UserManager.SendEmailAsync(userID, subject, bodyOfEmail);
+            return callbackUrl;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SendConfirmationEmail(string url) {
+            string id = User.Identity.GetUserId();
+            await SendEmailConfirmationTokenAsync(id, "Confirm this account", ",");
+            ViewBag.EmailSent = true;
+            return RedirectToAction("Index", new RouteValueDictionary(new { controller = "Home", action = "Index", message = AccountMessageId.EmailSentSuccess }));
+        }
+
         //
-        // GET: /Account/ConfirmEmail
+        // GET: /Account/ConfirmEmail 
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {

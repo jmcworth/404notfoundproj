@@ -10,6 +10,12 @@ namespace Peak_Performance.Models
         public string Email { get; set; }
     }
 
+    public enum AccountMessageId
+    {
+        EmailSentSuccess,
+        EmailConfirmationNeeded
+    }
+
     public class ExternalLoginListViewModel
     {
         public string ReturnUrl { get; set; }

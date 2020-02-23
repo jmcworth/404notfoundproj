@@ -11,15 +11,26 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Peak_Performance.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Peak_Performance
 {
-    public class EmailService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+    public class EmailService : IIdentityMessageService {
+        public async Task SendAsync(IdentityMessage message) {
+            await ConfigSendGridasync(message);
+        }
+
+        private async Task ConfigSendGridasync(IdentityMessage message) {
+            var myMessage = new SendGridMessage();
+            myMessage.AddTo(message.Destination);
+            myMessage.SetFrom(new EmailAddress("peakperformancewou@gmail.com", "Peak Performance"));
+            myMessage.SetSubject(message.Subject);
+            myMessage.AddContent(MimeType.Text, message.Body);
+            myMessage.AddContent(MimeType.Html, message.Body);
+            string apiKey = "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";
+            var client = new SendGridClient(apiKey);
+            var response = await client.SendEmailAsync(myMessage);
         }
     }
 

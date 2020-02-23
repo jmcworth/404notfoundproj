@@ -30,7 +30,6 @@ namespace Peak_Performance.Models
 
         public bool Active { get; set; }
 
-        [Required]
         [StringLength(128)]
         public string UserId { get; set; }
 

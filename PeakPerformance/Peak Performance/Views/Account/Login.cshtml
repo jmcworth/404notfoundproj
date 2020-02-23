@@ -12,65 +12,74 @@
 </div>
 
 <div class="row">
-        <div class="carousel slide" data-ride="carousel" id="carousel-example-generic" >
+    <div class="carousel slide" data-ride="carousel" id="carousel-example-generic">
 
-            <ul class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-            </ul>
+        <ul class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+        </ul>
 
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="~/Images/lift.png" alt="Lift">
-                    <div class="carousel-caption">
-                        <h3>Get Swole</h3>
-                        <p>Lift tons of weight but not too much</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="~/Images/bike.png" alt="Bike">
-                    <div class="carousel-caption">
-                        <h3>Cardio</h3>
-                        <p>A great way to burn tons of calories</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="~/Images/treadmill.png" alt="Treadmill">
-                    <div class="carousel-caption">
-                        <h3>Running</h3>
-                        <p>A great way to warm up or cool down</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="~/Images/lunge.png" alt="Lunge">
-                    <div class="carousel-caption">
-                        <h3>Lunges</h3>
-                        <p>I think that's what this movement is called, not sure</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="~/Images/pushup.png" alt="Pushup">
-                    <div class="carousel-caption">
-                        <h3>Hard Workouts</h3>
-                        <p>While this creepy guy watches you</p>
-                    </div>
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="~/Images/lift.png" alt="Lift">
+                <div class="carousel-caption">
+                    <h3>Get Swole</h3>
+                    <p>Lift tons of weight but not too much</p>
                 </div>
             </div>
-
-            <a class="carousel-control left" href="#carousel-example-generic" data-slide="prev">
-                <span class="icon-prev"></span>
-            </a>
-            <a class="carousel-control right" href="#carousel-example-generic" data-slide="next">
-                <span class="icon-next"></span>
-            </a>
-
+            <div class="item">
+                <img src="~/Images/bike.png" alt="Bike">
+                <div class="carousel-caption">
+                    <h3>Cardio</h3>
+                    <p>A great way to burn tons of calories</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="~/Images/treadmill.png" alt="Treadmill">
+                <div class="carousel-caption">
+                    <h3>Running</h3>
+                    <p>A great way to warm up or cool down</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="~/Images/lunge.png" alt="Lunge">
+                <div class="carousel-caption">
+                    <h3>Lunges</h3>
+                    <p>I think that's what this movement is called, not sure</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="~/Images/pushup.png" alt="Pushup">
+                <div class="carousel-caption">
+                    <h3>Hard Workouts</h3>
+                    <p>While this creepy guy watches you</p>
+                </div>
+            </div>
         </div>
+
+        <a class="carousel-control left" href="#carousel-example-generic" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="carousel-control right" href="#carousel-example-generic" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+
+    </div>
 </div>
 
 <h2>@ViewBag.Title.</h2>
+
+@if(ViewBag.error != null) {
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.error");
+            };
+    </script>
+}
+
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
@@ -110,9 +119,9 @@
                     @Html.ActionLink("Register as a new user", "Register")
                 </p>
                 @* Enable this once you have account confirmation enabled for password reset functionality
-                <p>
-                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                </p>*@
+                    <p>
+                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                    </p>*@
             }
         </section>
     </div>
