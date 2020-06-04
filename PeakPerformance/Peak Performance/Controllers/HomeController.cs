@@ -71,7 +71,7 @@ namespace Peak_Performance.Controllers
                 {
                     var senderEmail = new MailAddress("peakperformance1189@gmail.com", name);
                     var receiverEmail = new MailAddress("peakperformancewou@gmail.com");
-                    var gmail = "Thisisfor1!";
+                    var gmail = System.Web.Configuration.WebConfigurationManager.AppSettings["emailcontactkey"];
                     var body = "Customer Email: " + cutomerEmail + System.Environment.NewLine + System.Environment.NewLine + message;
                     var smtp = new SmtpClient
                     {
